@@ -1,10 +1,28 @@
+@import 'variables';
+@import 'card';
+@import 'stars';
+@import 'button';
+
 :root {
   --blue: #00acdc;
 }
 
+html {
+  font-size: 10px;
+  line-height: 14px;
+  color: #616070;
+  box-sizing: border-box;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
+
 body {
   margin: 0;
-  font-family: Roboto, Arial, sans-serif;
+  font-family: $main-font;
 }
 
 .header {
