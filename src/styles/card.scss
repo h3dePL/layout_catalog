@@ -16,7 +16,6 @@
 
   @media (min-width: 1024px) {
     grid-template-columns: repeat(4, $card-width);
-    padding-inline: 32px;
   }
 }
 
@@ -38,7 +37,7 @@
   }
 
   &:hover &__title {
-    color: #34568b;
+    color: $title-hover-color;
   }
 
   &__inner {
