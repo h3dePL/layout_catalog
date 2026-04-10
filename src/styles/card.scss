@@ -16,6 +16,7 @@
 
   @media (min-width: 1024px) {
     grid-template-columns: repeat(4, $card-width);
+    padding-inline: 32px;
   }
 }
 
@@ -27,6 +28,18 @@
   border-radius: $card-border-radius;
   padding: $card-padding;
   background: #fff;
+  position: relative;
+  z-index: 0;
+  transition: transform 300ms;
+
+  &:hover {
+    transform: scale(1.2);
+    z-index: 1;
+  }
+
+  &:hover &__title {
+    color: #34568b;
+  }
 
   &__inner {
     display: block;
@@ -48,6 +61,7 @@
     font-size: $font-size-md;
     font-weight: $font-weight-medium;
     color: $title-color;
+    transition: color 300ms;
   }
 
   &__code {

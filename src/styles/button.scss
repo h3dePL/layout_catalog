@@ -18,6 +18,7 @@
   color: $main-text-color;
   text-decoration: none;
   text-transform: uppercase;
+  transition: background-color 300ms, color 300ms;
 
   &:hover {
     background-color: $main-text-color;
