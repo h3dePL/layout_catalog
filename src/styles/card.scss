@@ -3,7 +3,7 @@
 .catalog {
   display: grid;
   grid-template-columns: repeat(1, $card-width);
-  gap: 46px 48px;
+  gap: 48px 46px;
   padding: 50px 40px;
 
   @media (min-width: 488px) {
@@ -38,10 +38,6 @@
 
   &:hover .card__title {
     color: $title-hover-color;
-  }
-
-  &__inner {
-    display: block;
   }
 
   &__img,
