@@ -5,21 +5,11 @@ on:
     branches: [master]
   workflow_dispatch:
 
-env:
-  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
-
-permissions:
-  contents: read
-  pages: write
-  id-token: write
-
-concurrency:
-  group: pages
-  cancel-in-progress: true
-
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - uses: actions/checkout@v4
       - name: Use Node.js
@@ -28,44 +18,8 @@ jobs:
           node-version: 20.x
       - run: npm install
       - run: npm run build
-      - name: Enable GitHub Pages via API
-        run: |
-          # Try to update existing Pages site to workflow (Actions) type
-          STATUS=$(curl -s -o /tmp/pages_patch.json -w "%{http_code}" -X PATCH \
-            -H "Authorization: Bearer ${{ secrets.PAGES_PAT }}" \
-            -H "Accept: application/vnd.github+json" \
-            -H "X-GitHub-Api-Version: 2022-11-28" \
-            https://api.github.com/repos/h3dePL/layout_catalog/pages \
-            -d '{"build_type":"workflow"}')
-          echo "PATCH status: $STATUS"
-          cat /tmp/pages_patch.json
-          # If not found (404), create it
-          if [ "$STATUS" = "404" ]; then
-            curl -s -X POST \
-              -H "Authorization: Bearer ${{ secrets.PAGES_PAT }}" \
-              -H "Accept: application/vnd.github+json" \
-              -H "X-GitHub-Api-Version: 2022-11-28" \
-              https://api.github.com/repos/h3dePL/layout_catalog/pages \
-              -d '{"build_type":"workflow"}'
-          fi
-      - name: Setup Pages
-        uses: actions/configure-pages@v5
-        continue-on-error: true
-        with:
-          token: ${{ secrets.PAGES_PAT || github.token }}
-          enablement: true
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: ./dist
-
-  deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
-    needs: build
-    steps:
       - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist
